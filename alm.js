@@ -1,101 +1,201 @@
-// sample data
-data_all = {"article":{"doi":"10.1371/journal.pone.0046774","title":"Testosterone Administration Reduces Lying in Men","pub_med":"23071635","pub_med_central":"3468628","events_count":9902,"published":"2012-10-10T00:00:00-07:00","source":[{"source":"Bloglines","updated_at":"1970-01-01T00:00:00Z","count":0},{"source":"CiteULike","updated_at":"2012-11-01T03:54:38Z","count":0,"histories":[{"updated_at":"2012-10-03T05:02:28Z","count":0},{"updated_at":"2012-10-10T08:01:05Z","count":0},{"updated_at":"2012-10-17T16:04:34Z","count":0},{"updated_at":"2012-10-24T20:09:13Z","count":0},{"updated_at":"2012-11-01T03:54:38Z","count":0}]},{"source":"Connotea","updated_at":"1970-01-01T00:00:00Z","count":0},{"source":"CrossRef","updated_at":"2012-11-02T03:47:15Z","count":0,"histories":[{"updated_at":"2012-10-03T04:59:23Z","count":0},{"updated_at":"2012-10-10T08:00:17Z","count":0},{"updated_at":"2012-10-18T01:00:50Z","count":0},{"updated_at":"2012-10-25T03:04:56Z","count":0},{"updated_at":"2012-11-02T03:47:15Z","count":0}]},{"source":"Nature","updated_at":"1970-01-01T00:00:00Z","count":0},{"source":"Postgenomic","updated_at":"1970-01-01T00:00:00Z","count":0},{"source":"PubMed Central","updated_at":"2012-11-01T03:15:40Z","count":0,"histories":[{"updated_at":"2012-10-03T05:15:42Z","count":0},{"updated_at":"2012-10-10T07:14:03Z","count":0},{"updated_at":"2012-10-17T15:16:02Z","count":0},{"updated_at":"2012-10-24T17:37:37Z","count":0},{"updated_at":"2012-11-01T03:15:40Z","count":0}]},{"source":"Scopus","updated_at":"2012-11-01T10:35:44Z","count":0,"histories":[{"updated_at":"2012-10-03T04:57:31Z","count":0},{"updated_at":"2012-10-10T07:56:45Z","count":0},{"updated_at":"2012-10-17T14:58:52Z","count":0},{"updated_at":"2012-10-25T05:01:36Z","count":0},{"updated_at":"2012-11-01T10:35:44Z","count":0}]},{"source":"Counter","updated_at":"2012-11-04T21:35:11Z","count":9474,"histories":[{"updated_at":"2012-10-03T21:05:39Z","count":0},{"updated_at":"2012-10-03T21:10:43Z","count":0},{"updated_at":"2012-10-04T21:10:27Z","count":0},{"updated_at":"2012-10-04T21:10:50Z","count":0},{"updated_at":"2012-10-05T21:12:42Z","count":0},{"updated_at":"2012-10-05T21:13:00Z","count":0},{"updated_at":"2012-10-06T21:09:26Z","count":0},{"updated_at":"2012-10-06T21:09:56Z","count":0},{"updated_at":"2012-10-07T21:07:04Z","count":0},{"updated_at":"2012-10-07T21:07:21Z","count":0},{"updated_at":"2012-10-08T21:44:38Z","count":0},{"updated_at":"2012-10-08T21:44:46Z","count":0},{"updated_at":"2012-10-09T21:11:13Z","count":0},{"updated_at":"2012-10-09T21:11:45Z","count":0},{"updated_at":"2012-10-10T21:13:43Z","count":0},{"updated_at":"2012-10-10T21:13:58Z","count":0},{"updated_at":"2012-10-11T21:47:11Z","count":285},{"updated_at":"2012-10-11T21:47:57Z","count":285},{"updated_at":"2012-10-12T21:07:46Z","count":1189},{"updated_at":"2012-10-12T21:31:25Z","count":1189},{"updated_at":"2012-10-13T21:33:26Z","count":2349},{"updated_at":"2012-10-13T21:33:54Z","count":2349},{"updated_at":"2012-10-14T21:51:30Z","count":2775},{"updated_at":"2012-10-14T22:12:13Z","count":2775},{"updated_at":"2012-10-15T22:24:18Z","count":3282},{"updated_at":"2012-10-15T22:24:48Z","count":3282},{"updated_at":"2012-10-16T20:49:08Z","count":4790},{"updated_at":"2012-10-16T20:49:36Z","count":4790},{"updated_at":"2012-10-17T20:25:09Z","count":5465},{"updated_at":"2012-10-17T20:57:14Z","count":5465},{"updated_at":"2012-10-18T20:52:28Z","count":5888},{"updated_at":"2012-10-18T20:53:04Z","count":5888},{"updated_at":"2012-10-19T20:54:30Z","count":6230},{"updated_at":"2012-10-19T20:54:49Z","count":6230},{"updated_at":"2012-10-20T20:43:04Z","count":6386},{"updated_at":"2012-10-20T20:43:37Z","count":6386},{"updated_at":"2012-10-21T20:44:46Z","count":6671},{"updated_at":"2012-10-21T20:45:19Z","count":6671},{"updated_at":"2012-10-22T19:35:28Z","count":6823},{"updated_at":"2012-10-22T21:08:30Z","count":6823},{"updated_at":"2012-10-23T20:56:32Z","count":6967},{"updated_at":"2012-10-23T20:56:33Z","count":6967},{"updated_at":"2012-10-24T20:50:10Z","count":7056},{"updated_at":"2012-10-24T20:53:01Z","count":7056},{"updated_at":"2012-10-25T20:40:38Z","count":7138},{"updated_at":"2012-10-25T20:52:06Z","count":7138},{"updated_at":"2012-10-26T20:51:43Z","count":7234},{"updated_at":"2012-10-26T20:52:12Z","count":7234},{"updated_at":"2012-10-27T20:48:48Z","count":8683},{"updated_at":"2012-10-27T20:49:00Z","count":8683},{"updated_at":"2012-10-28T20:45:38Z","count":8848},{"updated_at":"2012-10-28T20:46:23Z","count":8848},{"updated_at":"2012-10-29T21:01:56Z","count":8848},{"updated_at":"2012-10-29T21:02:33Z","count":8848},{"updated_at":"2012-10-30T20:55:48Z","count":9069},{"updated_at":"2012-10-30T20:56:25Z","count":9069},{"updated_at":"2012-11-01T21:00:31Z","count":9254},{"updated_at":"2012-11-01T21:09:53Z","count":9254},{"updated_at":"2012-11-02T20:46:04Z","count":9303},{"updated_at":"2012-11-02T20:46:05Z","count":9303},{"updated_at":"2012-11-03T20:37:14Z","count":9420},{"updated_at":"2012-11-03T20:37:15Z","count":9420},{"updated_at":"2012-11-04T21:34:59Z","count":9474},{"updated_at":"2012-11-04T21:35:11Z","count":9474}]},{"source":"Research Blogging","updated_at":"2012-11-02T02:42:17Z","count":0,"histories":[{"updated_at":"2012-10-03T06:35:10Z","count":0},{"updated_at":"2012-10-10T08:03:06Z","count":0},{"updated_at":"2012-10-17T23:00:42Z","count":0},{"updated_at":"2012-10-25T12:02:15Z","count":0},{"updated_at":"2012-11-02T02:42:17Z","count":0}]},{"source":"Biod","updated_at":"2012-11-05T20:42:51Z","count":0,"histories":[{"updated_at":"2012-10-03T20:04:49Z","count":0},{"updated_at":"2012-10-03T20:08:01Z","count":0},{"updated_at":"2012-10-04T20:03:22Z","count":0},{"updated_at":"2012-10-04T20:08:22Z","count":0},{"updated_at":"2012-10-05T20:08:03Z","count":0},{"updated_at":"2012-10-05T20:08:07Z","count":0},{"updated_at":"2012-10-06T20:06:38Z","count":0},{"updated_at":"2012-10-06T20:06:58Z","count":0},{"updated_at":"2012-10-07T20:01:38Z","count":0},{"updated_at":"2012-10-07T20:07:57Z","count":0},{"updated_at":"2012-10-08T20:06:22Z","count":0},{"updated_at":"2012-10-08T20:06:55Z","count":0},{"updated_at":"2012-10-09T20:06:33Z","count":0},{"updated_at":"2012-10-09T20:06:50Z","count":0},{"updated_at":"2012-10-10T20:05:49Z","count":0},{"updated_at":"2012-10-10T20:06:01Z","count":0},{"updated_at":"2012-10-11T20:11:31Z","count":0},{"updated_at":"2012-10-11T20:12:00Z","count":0},{"updated_at":"2012-10-12T19:46:53Z","count":0},{"updated_at":"2012-10-12T20:07:52Z","count":0},{"updated_at":"2012-10-13T20:14:32Z","count":0},{"updated_at":"2012-10-13T20:25:18Z","count":0},{"updated_at":"2012-10-14T21:08:51Z","count":0},{"updated_at":"2012-10-14T21:09:10Z","count":0},{"updated_at":"2012-10-15T20:45:45Z","count":0},{"updated_at":"2012-10-15T21:09:14Z","count":0},{"updated_at":"2012-10-16T19:34:22Z","count":0},{"updated_at":"2012-10-16T19:34:26Z","count":0},{"updated_at":"2012-10-17T19:32:28Z","count":0},{"updated_at":"2012-10-17T19:33:07Z","count":0},{"updated_at":"2012-10-18T19:10:27Z","count":0},{"updated_at":"2012-10-18T19:36:50Z","count":0},{"updated_at":"2012-10-19T19:32:48Z","count":0},{"updated_at":"2012-10-19T19:32:48Z","count":0},{"updated_at":"2012-10-20T19:32:04Z","count":0},{"updated_at":"2012-10-20T19:32:38Z","count":0},{"updated_at":"2012-10-21T19:24:59Z","count":0},{"updated_at":"2012-10-21T19:31:01Z","count":0},{"updated_at":"2012-10-22T19:37:08Z","count":0},{"updated_at":"2012-10-22T19:37:33Z","count":0},{"updated_at":"2012-10-23T19:06:50Z","count":0},{"updated_at":"2012-10-23T19:34:23Z","count":0},{"updated_at":"2012-10-24T19:25:53Z","count":0},{"updated_at":"2012-10-24T19:36:02Z","count":0},{"updated_at":"2012-10-25T19:29:00Z","count":0},{"updated_at":"2012-10-25T19:29:07Z","count":0},{"updated_at":"2012-10-26T19:25:58Z","count":0},{"updated_at":"2012-10-26T19:37:21Z","count":0},{"updated_at":"2012-10-27T19:32:22Z","count":0},{"updated_at":"2012-10-27T19:32:47Z","count":0},{"updated_at":"2012-10-28T19:32:08Z","count":0},{"updated_at":"2012-10-28T19:32:17Z","count":0},{"updated_at":"2012-10-29T19:19:58Z","count":0},{"updated_at":"2012-10-29T19:36:00Z","count":0},{"updated_at":"2012-10-30T19:42:10Z","count":0},{"updated_at":"2012-10-30T19:42:43Z","count":0},{"updated_at":"2012-11-01T19:44:16Z","count":0},{"updated_at":"2012-11-01T19:44:30Z","count":0},{"updated_at":"2012-11-02T19:49:27Z","count":0},{"updated_at":"2012-11-02T19:50:06Z","count":0},{"updated_at":"2012-11-03T19:43:09Z","count":0},{"updated_at":"2012-11-03T19:43:34Z","count":0},{"updated_at":"2012-11-04T20:41:20Z","count":0},{"updated_at":"2012-11-04T20:41:44Z","count":0},{"updated_at":"2012-11-05T20:42:41Z","count":0},{"updated_at":"2012-11-05T20:42:51Z","count":0}]},{"source":"PubMed Central Usage Stats","updated_at":"2012-10-03T06:10:45Z","count":0,"histories":[{"updated_at":"2012-10-03T06:10:45Z","count":0}]},{"source":"Facebook","updated_at":"2012-11-01T13:08:38Z","count":335,"histories":[{"updated_at":"2012-10-03T05:59:50Z","count":0},{"updated_at":"2012-10-10T08:06:28Z","count":0},{"updated_at":"2012-10-17T16:54:18Z","count":255},{"updated_at":"2012-10-25T04:55:58Z","count":296},{"updated_at":"2012-11-01T13:08:38Z","count":335}]},{"source":"Mendeley","updated_at":"2012-11-01T00:08:43Z","count":10,"histories":[{"updated_at":"2012-10-03T05:34:10Z","count":0},{"updated_at":"2012-10-10T07:31:03Z","count":0},{"updated_at":"2012-10-17T10:32:44Z","count":1},{"updated_at":"2012-10-24T20:50:11Z","count":6},{"updated_at":"2012-11-01T00:08:43Z","count":10}]},{"source":"Twitter","updated_at":"2012-11-05T08:36:39Z","count":83,"histories":[{"updated_at":"2012-10-03T04:54:10Z","count":0},{"updated_at":"2012-10-10T07:28:26Z","count":0},{"updated_at":"2012-10-10T08:28:27Z","count":0},{"updated_at":"2012-10-10T09:28:29Z","count":0},{"updated_at":"2012-10-10T10:28:31Z","count":0},{"updated_at":"2012-10-10T11:28:29Z","count":0},{"updated_at":"2012-10-10T12:28:37Z","count":0},{"updated_at":"2012-10-10T13:28:44Z","count":0},{"updated_at":"2012-10-10T14:28:43Z","count":0},{"updated_at":"2012-10-10T15:28:47Z","count":0},{"updated_at":"2012-10-10T16:29:00Z","count":0},{"updated_at":"2012-10-10T17:28:49Z","count":0},{"updated_at":"2012-10-10T18:28:48Z","count":0},{"updated_at":"2012-10-10T19:28:51Z","count":0},{"updated_at":"2012-10-10T20:28:46Z","count":0},{"updated_at":"2012-10-10T21:28:47Z","count":1},{"updated_at":"2012-10-10T22:28:52Z","count":1},{"updated_at":"2012-10-10T23:28:54Z","count":2},{"updated_at":"2012-10-11T00:28:54Z","count":3},{"updated_at":"2012-10-11T01:28:57Z","count":4},{"updated_at":"2012-10-11T02:29:02Z","count":4},{"updated_at":"2012-10-11T03:29:18Z","count":4},{"updated_at":"2012-10-11T04:29:18Z","count":8},{"updated_at":"2012-10-11T05:29:06Z","count":9},{"updated_at":"2012-10-11T06:29:05Z","count":10},{"updated_at":"2012-10-11T07:29:05Z","count":10},{"updated_at":"2012-10-11T08:29:03Z","count":17},{"updated_at":"2012-10-11T09:29:07Z","count":17},{"updated_at":"2012-10-11T10:29:12Z","count":18},{"updated_at":"2012-10-11T11:29:14Z","count":18},{"updated_at":"2012-10-11T12:29:14Z","count":19},{"updated_at":"2012-10-11T13:29:15Z","count":20},{"updated_at":"2012-10-11T14:29:22Z","count":20},{"updated_at":"2012-10-11T15:29:24Z","count":21},{"updated_at":"2012-10-11T16:29:58Z","count":21},{"updated_at":"2012-10-11T17:29:48Z","count":23},{"updated_at":"2012-10-11T18:29:38Z","count":23},{"updated_at":"2012-10-11T19:29:55Z","count":24},{"updated_at":"2012-10-11T20:29:37Z","count":25},{"updated_at":"2012-10-11T21:30:00Z","count":26},{"updated_at":"2012-10-11T22:29:32Z","count":27},{"updated_at":"2012-10-11T23:29:33Z","count":27},{"updated_at":"2012-10-12T00:29:41Z","count":28},{"updated_at":"2012-10-12T01:29:43Z","count":28},{"updated_at":"2012-10-12T02:29:50Z","count":28},{"updated_at":"2012-10-12T03:29:49Z","count":28},{"updated_at":"2012-10-12T04:29:54Z","count":28},{"updated_at":"2012-10-12T05:30:03Z","count":28},{"updated_at":"2012-10-12T06:29:59Z","count":28},{"updated_at":"2012-10-12T07:30:11Z","count":28},{"updated_at":"2012-10-12T08:30:02Z","count":28},{"updated_at":"2012-10-12T09:30:06Z","count":28},{"updated_at":"2012-10-12T10:30:06Z","count":28},{"updated_at":"2012-10-12T11:30:06Z","count":29},{"updated_at":"2012-10-12T12:30:08Z","count":30},{"updated_at":"2012-10-12T13:30:20Z","count":32},{"updated_at":"2012-10-12T14:30:10Z","count":33},{"updated_at":"2012-10-12T15:30:13Z","count":35},{"updated_at":"2012-10-12T16:30:19Z","count":35},{"updated_at":"2012-10-12T17:31:00Z","count":36},{"updated_at":"2012-10-12T18:30:51Z","count":36},{"updated_at":"2012-10-12T19:30:43Z","count":36},{"updated_at":"2012-10-12T20:30:46Z","count":36},{"updated_at":"2012-10-12T21:30:25Z","count":36},{"updated_at":"2012-10-12T22:30:20Z","count":36},{"updated_at":"2012-10-12T23:30:20Z","count":37},{"updated_at":"2012-10-13T00:30:25Z","count":38},{"updated_at":"2012-10-13T01:30:24Z","count":38},{"updated_at":"2012-10-13T02:30:26Z","count":38},{"updated_at":"2012-10-13T03:30:23Z","count":38},{"updated_at":"2012-10-13T04:30:26Z","count":38},{"updated_at":"2012-10-13T05:30:30Z","count":38},{"updated_at":"2012-10-13T06:30:31Z","count":38},{"updated_at":"2012-10-13T07:30:34Z","count":38},{"updated_at":"2012-10-13T08:30:45Z","count":38},{"updated_at":"2012-10-13T09:30:31Z","count":38},{"updated_at":"2012-10-13T10:30:34Z","count":38},{"updated_at":"2012-10-13T11:30:33Z","count":38},{"updated_at":"2012-10-13T12:30:30Z","count":38},{"updated_at":"2012-10-13T13:30:36Z","count":38},{"updated_at":"2012-10-13T14:30:33Z","count":39},{"updated_at":"2012-10-13T15:30:31Z","count":39},{"updated_at":"2012-10-13T16:30:36Z","count":40},{"updated_at":"2012-10-13T17:30:57Z","count":40},{"updated_at":"2012-10-13T18:30:47Z","count":40},{"updated_at":"2012-10-13T19:30:46Z","count":40},{"updated_at":"2012-10-13T20:30:53Z","count":40},{"updated_at":"2012-10-13T21:30:51Z","count":40},{"updated_at":"2012-10-13T22:30:46Z","count":40},{"updated_at":"2012-10-13T23:30:45Z","count":40},{"updated_at":"2012-10-14T00:30:48Z","count":40},{"updated_at":"2012-10-14T01:30:48Z","count":40},{"updated_at":"2012-10-14T02:30:48Z","count":40},{"updated_at":"2012-10-14T03:30:46Z","count":40},{"updated_at":"2012-10-14T04:30:48Z","count":40},{"updated_at":"2012-10-14T05:30:53Z","count":40},{"updated_at":"2012-10-14T06:30:57Z","count":40},{"updated_at":"2012-10-14T07:31:00Z","count":40},{"updated_at":"2012-10-14T08:31:14Z","count":40},{"updated_at":"2012-10-14T09:31:21Z","count":40},{"updated_at":"2012-10-14T10:31:13Z","count":40},{"updated_at":"2012-10-14T11:31:05Z","count":40},{"updated_at":"2012-10-14T12:31:08Z","count":40},{"updated_at":"2012-10-14T13:31:08Z","count":40},{"updated_at":"2012-10-14T14:31:06Z","count":40},{"updated_at":"2012-10-14T15:31:07Z","count":40},{"updated_at":"2012-10-14T16:31:07Z","count":40},{"updated_at":"2012-10-14T17:31:15Z","count":40},{"updated_at":"2012-10-14T18:31:13Z","count":40},{"updated_at":"2012-10-14T19:31:26Z","count":40},{"updated_at":"2012-10-14T20:31:26Z","count":41},{"updated_at":"2012-10-14T21:31:30Z","count":43},{"updated_at":"2012-10-14T22:31:25Z","count":43},{"updated_at":"2012-10-14T23:31:24Z","count":44},{"updated_at":"2012-10-15T00:31:26Z","count":44},{"updated_at":"2012-10-15T01:31:27Z","count":44},{"updated_at":"2012-10-15T02:31:25Z","count":44},{"updated_at":"2012-10-15T03:31:24Z","count":44},{"updated_at":"2012-10-15T04:31:27Z","count":44},{"updated_at":"2012-10-15T05:31:26Z","count":44},{"updated_at":"2012-10-15T06:31:30Z","count":44},{"updated_at":"2012-10-15T07:31:32Z","count":44},{"updated_at":"2012-10-15T08:31:38Z","count":44},{"updated_at":"2012-10-15T09:31:40Z","count":44},{"updated_at":"2012-10-15T10:31:45Z","count":44},{"updated_at":"2012-10-15T11:31:46Z","count":45},{"updated_at":"2012-10-15T12:32:04Z","count":47},{"updated_at":"2012-10-15T13:31:51Z","count":48},{"updated_at":"2012-10-15T14:31:48Z","count":50},{"updated_at":"2012-10-15T15:31:45Z","count":52},{"updated_at":"2012-10-15T16:31:46Z","count":52},{"updated_at":"2012-10-15T17:31:43Z","count":52},{"updated_at":"2012-10-15T18:31:55Z","count":53},{"updated_at":"2012-10-15T19:31:59Z","count":53},{"updated_at":"2012-10-15T20:31:54Z","count":53},{"updated_at":"2012-10-15T21:32:04Z","count":54},{"updated_at":"2012-10-15T22:31:57Z","count":54},{"updated_at":"2012-10-15T23:32:02Z","count":54},{"updated_at":"2012-10-16T00:32:13Z","count":54},{"updated_at":"2012-10-16T01:32:09Z","count":55},{"updated_at":"2012-10-16T02:32:04Z","count":55},{"updated_at":"2012-10-16T03:32:05Z","count":55},{"updated_at":"2012-10-16T04:32:06Z","count":55},{"updated_at":"2012-10-16T05:32:04Z","count":55},{"updated_at":"2012-10-16T06:32:05Z","count":55},{"updated_at":"2012-10-16T07:32:07Z","count":55},{"updated_at":"2012-10-16T08:32:09Z","count":56},{"updated_at":"2012-10-16T09:32:11Z","count":57},{"updated_at":"2012-10-16T10:32:17Z","count":57},{"updated_at":"2012-10-16T11:32:20Z","count":58},{"updated_at":"2012-10-16T12:32:23Z","count":59},{"updated_at":"2012-10-16T13:32:24Z","count":59},{"updated_at":"2012-10-16T14:32:23Z","count":59},{"updated_at":"2012-10-16T15:32:22Z","count":59},{"updated_at":"2012-10-16T16:32:30Z","count":60},{"updated_at":"2012-10-16T17:32:31Z","count":60},{"updated_at":"2012-10-16T18:32:29Z","count":60},{"updated_at":"2012-10-16T19:32:26Z","count":60},{"updated_at":"2012-10-16T20:32:28Z","count":60},{"updated_at":"2012-10-16T21:32:27Z","count":61},{"updated_at":"2012-10-16T22:32:36Z","count":61},{"updated_at":"2012-10-16T23:32:38Z","count":61},{"updated_at":"2012-10-17T00:32:41Z","count":61},{"updated_at":"2012-10-17T01:32:48Z","count":61},{"updated_at":"2012-10-17T02:32:45Z","count":61},{"updated_at":"2012-10-17T03:32:50Z","count":61},{"updated_at":"2012-10-17T04:32:44Z","count":61},{"updated_at":"2012-10-17T05:32:42Z","count":61},{"updated_at":"2012-10-17T06:32:43Z","count":61},{"updated_at":"2012-10-17T07:32:45Z","count":62},{"updated_at":"2012-10-17T08:32:44Z","count":63},{"updated_at":"2012-10-17T09:32:48Z","count":63},{"updated_at":"2012-10-17T10:32:50Z","count":63},{"updated_at":"2012-10-17T11:32:55Z","count":63},{"updated_at":"2012-10-17T12:33:08Z","count":63},{"updated_at":"2012-10-17T13:32:59Z","count":64},{"updated_at":"2012-10-17T14:33:02Z","count":64},{"updated_at":"2012-10-17T15:33:03Z","count":64},{"updated_at":"2012-10-17T16:33:12Z","count":65},{"updated_at":"2012-10-17T17:33:34Z","count":65},{"updated_at":"2012-10-17T18:33:10Z","count":65},{"updated_at":"2012-10-17T19:33:02Z","count":65},{"updated_at":"2012-10-17T20:33:04Z","count":65},{"updated_at":"2012-10-17T21:33:04Z","count":65},{"updated_at":"2012-10-17T22:33:06Z","count":67},{"updated_at":"2012-10-17T23:33:09Z","count":68},{"updated_at":"2012-10-18T00:33:12Z","count":68},{"updated_at":"2012-10-18T01:33:14Z","count":68},{"updated_at":"2012-10-18T02:33:13Z","count":68},{"updated_at":"2012-10-18T03:33:19Z","count":68},{"updated_at":"2012-10-18T04:33:17Z","count":68},{"updated_at":"2012-10-18T05:33:20Z","count":68},{"updated_at":"2012-10-18T06:33:17Z","count":68},{"updated_at":"2012-10-18T07:33:20Z","count":68},{"updated_at":"2012-10-18T08:33:17Z","count":68},{"updated_at":"2012-10-18T09:33:33Z","count":68},{"updated_at":"2012-10-18T10:33:31Z","count":68},{"updated_at":"2012-10-18T11:33:31Z","count":68},{"updated_at":"2012-10-18T12:33:25Z","count":68},{"updated_at":"2012-10-18T13:33:29Z","count":68},{"updated_at":"2012-10-18T14:33:32Z","count":68},{"updated_at":"2012-10-18T15:33:37Z","count":68},{"updated_at":"2012-10-18T16:34:03Z","count":68},{"updated_at":"2012-10-18T17:33:55Z","count":69},{"updated_at":"2012-10-18T18:33:48Z","count":69},{"updated_at":"2012-10-18T19:33:40Z","count":69},{"updated_at":"2012-10-18T20:33:45Z","count":69},{"updated_at":"2012-10-18T21:33:41Z","count":69},{"updated_at":"2012-10-18T22:33:47Z","count":69},{"updated_at":"2012-10-18T23:33:45Z","count":69},{"updated_at":"2012-10-19T00:33:51Z","count":69},{"updated_at":"2012-10-19T01:33:54Z","count":69},{"updated_at":"2012-10-19T02:33:54Z","count":69},{"updated_at":"2012-10-19T03:33:58Z","count":69},{"updated_at":"2012-10-19T04:34:21Z","count":69},{"updated_at":"2012-10-19T05:34:27Z","count":69},{"updated_at":"2012-10-19T06:34:06Z","count":69},{"updated_at":"2012-10-19T07:34:03Z","count":69},{"updated_at":"2012-10-19T08:34:08Z","count":69},{"updated_at":"2012-10-19T09:34:12Z","count":69},{"updated_at":"2012-10-19T10:34:17Z","count":69},{"updated_at":"2012-10-19T11:34:15Z","count":69},{"updated_at":"2012-10-19T12:34:19Z","count":69},{"updated_at":"2012-10-19T13:34:24Z","count":69},{"updated_at":"2012-10-19T14:34:25Z","count":71},{"updated_at":"2012-10-19T15:34:31Z","count":71},{"updated_at":"2012-10-19T16:34:42Z","count":71},{"updated_at":"2012-10-19T17:35:07Z","count":71},{"updated_at":"2012-10-19T18:34:57Z","count":71},{"updated_at":"2012-10-19T19:34:58Z","count":71},{"updated_at":"2012-10-19T20:34:42Z","count":71},{"updated_at":"2012-10-19T21:34:36Z","count":71},{"updated_at":"2012-10-19T22:34:50Z","count":71},{"updated_at":"2012-10-19T23:34:41Z","count":71},{"updated_at":"2012-10-20T00:34:39Z","count":71},{"updated_at":"2012-10-20T01:34:42Z","count":71},{"updated_at":"2012-10-20T02:34:41Z","count":71},{"updated_at":"2012-10-20T03:34:47Z","count":71},{"updated_at":"2012-10-20T04:34:53Z","count":71},{"updated_at":"2012-10-20T05:34:47Z","count":71},{"updated_at":"2012-10-20T06:34:54Z","count":71},{"updated_at":"2012-10-20T07:34:51Z","count":71},{"updated_at":"2012-10-20T08:35:02Z","count":71},{"updated_at":"2012-10-20T09:34:55Z","count":71},{"updated_at":"2012-10-20T10:34:53Z","count":71},{"updated_at":"2012-10-20T11:34:56Z","count":71},{"updated_at":"2012-10-20T12:35:02Z","count":71},{"updated_at":"2012-10-20T13:34:53Z","count":71},{"updated_at":"2012-10-20T14:34:52Z","count":71},{"updated_at":"2012-10-20T15:35:01Z","count":71},{"updated_at":"2012-10-20T16:35:16Z","count":72},{"updated_at":"2012-10-20T17:35:15Z","count":72},{"updated_at":"2012-10-20T18:35:10Z","count":72},{"updated_at":"2012-10-20T19:35:06Z","count":72},{"updated_at":"2012-10-20T20:35:11Z","count":72},{"updated_at":"2012-10-20T21:35:09Z","count":72},{"updated_at":"2012-10-20T22:35:09Z","count":72},{"updated_at":"2012-10-20T23:35:04Z","count":72},{"updated_at":"2012-10-21T00:35:05Z","count":72},{"updated_at":"2012-10-21T01:35:03Z","count":72},{"updated_at":"2012-10-21T02:35:04Z","count":72},{"updated_at":"2012-10-21T03:35:03Z","count":72},{"updated_at":"2012-10-21T04:35:07Z","count":72},{"updated_at":"2012-10-21T05:35:11Z","count":72},{"updated_at":"2012-10-21T06:35:15Z","count":72},{"updated_at":"2012-10-21T07:35:13Z","count":72},{"updated_at":"2012-10-21T08:35:27Z","count":72},{"updated_at":"2012-10-21T09:35:19Z","count":72},{"updated_at":"2012-10-21T10:35:19Z","count":72},{"updated_at":"2012-10-21T11:35:19Z","count":72},{"updated_at":"2012-10-21T12:35:29Z","count":72},{"updated_at":"2012-10-21T13:35:30Z","count":72},{"updated_at":"2012-10-21T14:35:26Z","count":72},{"updated_at":"2012-10-21T15:35:32Z","count":72},{"updated_at":"2012-10-21T16:35:47Z","count":72},{"updated_at":"2012-10-21T17:35:23Z","count":72},{"updated_at":"2012-10-21T18:35:26Z","count":72},{"updated_at":"2012-10-21T19:35:32Z","count":72},{"updated_at":"2012-10-21T20:35:44Z","count":72},{"updated_at":"2012-10-21T21:35:35Z","count":72},{"updated_at":"2012-10-21T22:35:35Z","count":72},{"updated_at":"2012-10-21T23:35:38Z","count":72},{"updated_at":"2012-10-22T00:35:37Z","count":72},{"updated_at":"2012-10-22T01:35:43Z","count":72},{"updated_at":"2012-10-22T02:35:45Z","count":72},{"updated_at":"2012-10-22T03:35:45Z","count":72},{"updated_at":"2012-10-22T04:35:51Z","count":72},{"updated_at":"2012-10-22T05:35:49Z","count":72},{"updated_at":"2012-10-22T06:35:53Z","count":72},{"updated_at":"2012-10-22T07:35:44Z","count":72},{"updated_at":"2012-10-22T08:35:51Z","count":72},{"updated_at":"2012-10-22T09:35:54Z","count":72},{"updated_at":"2012-10-22T10:35:54Z","count":72},{"updated_at":"2012-10-22T11:35:52Z","count":72},{"updated_at":"2012-10-22T12:35:55Z","count":72},{"updated_at":"2012-10-22T13:35:54Z","count":72},{"updated_at":"2012-10-22T14:36:18Z","count":72},{"updated_at":"2012-10-22T15:36:22Z","count":72},{"updated_at":"2012-10-22T16:36:10Z","count":72},{"updated_at":"2012-10-22T17:36:16Z","count":72},{"updated_at":"2012-10-22T18:36:14Z","count":72},{"updated_at":"2012-10-22T19:36:33Z","count":72},{"updated_at":"2012-10-22T20:36:08Z","count":72},{"updated_at":"2012-10-22T21:36:10Z","count":72},{"updated_at":"2012-10-22T22:36:11Z","count":72},{"updated_at":"2012-10-22T23:36:16Z","count":72},{"updated_at":"2012-10-23T00:36:20Z","count":72},{"updated_at":"2012-10-23T01:36:14Z","count":72},{"updated_at":"2012-10-23T02:36:23Z","count":72},{"updated_at":"2012-10-23T03:36:25Z","count":72},{"updated_at":"2012-10-23T04:36:24Z","count":72},{"updated_at":"2012-10-23T05:36:22Z","count":72},{"updated_at":"2012-10-23T06:36:25Z","count":72},{"updated_at":"2012-10-23T07:36:29Z","count":72},{"updated_at":"2012-10-23T08:36:31Z","count":72},{"updated_at":"2012-10-23T09:36:39Z","count":72},{"updated_at":"2012-10-23T10:36:30Z","count":72},{"updated_at":"2012-10-23T11:36:30Z","count":72},{"updated_at":"2012-10-23T12:36:33Z","count":72},{"updated_at":"2012-10-23T13:36:32Z","count":72},{"updated_at":"2012-10-23T14:36:42Z","count":72},{"updated_at":"2012-10-23T15:36:49Z","count":72},{"updated_at":"2012-10-23T16:36:51Z","count":72},{"updated_at":"2012-10-23T17:36:55Z","count":72},{"updated_at":"2012-10-23T18:36:44Z","count":72},{"updated_at":"2012-10-23T19:36:58Z","count":72},{"updated_at":"2012-10-23T20:36:46Z","count":72},{"updated_at":"2012-10-23T21:36:53Z","count":72},{"updated_at":"2012-10-23T22:36:55Z","count":72},{"updated_at":"2012-10-23T23:36:52Z","count":72},{"updated_at":"2012-10-24T00:36:54Z","count":72},{"updated_at":"2012-11-01T00:07:00Z","count":79},{"updated_at":"2012-11-01T13:05:04Z","count":79},{"updated_at":"2012-11-02T02:05:04Z","count":79},{"updated_at":"2012-11-02T15:05:19Z","count":79},{"updated_at":"2012-11-03T03:35:54Z","count":82},{"updated_at":"2012-11-03T16:36:43Z","count":83},{"updated_at":"2012-11-04T05:36:25Z","count":83},{"updated_at":"2012-11-04T19:06:37Z","count":83},{"updated_at":"2012-11-05T08:36:39Z","count":83}]},{"source":"Wikipedia","updated_at":"2012-11-01T15:42:00Z","count":0,"histories":[{"updated_at":"2012-10-09T01:17:48Z","count":0},{"updated_at":"2012-11-01T15:42:00Z","count":0}]}]}}
+// var doi = d3.select("dd#doi").attr('data-doi');
 
-var cummulative = true;
+// var dataUrl = "/api/v3/articles/info:doi/" + doi + "?info=history";
 
-var margin = {top: 20, right: 20, bottom: 30, left: 40},
-    width = 300 - margin.left - margin.right,
-    height = 100 - margin.top - margin.bottom;
+var baseUrl = 'http://alm.publicknowledgeproject.org';
+var baseUrl = '';
 
-data_all.article.source.forEach(function(d) {
-	if ( d.histories  ) {
-		var raw_data = d.histories;
-		var data,
-		 	prev = 0;
+var doi = '10.3402/meo.v15i0.4846';
+var dataUrl = baseUrl + 'alm.json'
 
-		data = d3.map();
-		// manipulate the cumulative counts AFTER the y domain has been set
-		raw_data.forEach(function(d) {
-			// if values are cumulative, subtract previous
-			if ( cummulative ) {
-		 		diff = d.count - prev;
-		     	prev = d.count;
-			}
-			floored_date = d3.time.day.floor(d3.time.format.iso.parse(d.updated_at))
-			if ( !data.has(floored_date) ) { data.set(floored_date, 0); }
-			data.set(floored_date, data.get(floored_date) + diff);
-		});
+function get_format_date(level, d) {
+    switch (level) {
+        case 'year':
+            return  new Date(d.year, 0, 0);
+        case 'month':
+            return new Date(d.year, d.month, 1);
+        case 'day':
+            return new Date(d.year, d.month, d.day);
+    }
+}
 
-		var x = d3.time.scale();
+d3.json(dataUrl, function(data) {
+    var margin = {top: 20, right: 20, bottom: 30, left: 40},
+        width = 600 - margin.left - margin.right,
+        height = 300 - margin.top - margin.bottom;
 
-		var y = d3.scale.linear()
-		    .range([height, 0]);
+    var colors = ["#304345","#789aa1","#304345","#789aa1","#304345","#789aa1","#304345","#789aa1","#304345","#789aa1"];
+    var pub_date = d3.time.format.iso.parse(data[0]["publication_date"]);
+    var cur_date = new Date;
+    var format_date = d3.time.format("%b %y");
+    var format_number = d3.format(",d")
 
-		// var xAxis = d3.svg.axis()
-		//     .scale(x)
-		//     .orient("bottom");
+    var canvas = d3.select("#alm").append("div");
 
-		var yAxis = d3.svg.axis()
-		    .scale(y)
-		    .orient("left");
+    var category = [{ name: "html", display_name: "HTML Views" },
+                    { name: "pdf", display_name: "PDF Downloads" },
+                    { name: "likes", display_name: "Likes" },
+                    { name: "shares", display_name: "Shares" },
+                    { name: "comments", display_name: "Comments" },
+                    { name: "citations", display_name: "Citations" }];
+    var categoryTotal;
+    var metricsFound = false;
 
-		var svg = d3.select("#vis").append("svg")
-		    .attr("width", width + margin.left + margin.right)
-		    .attr("height", height + margin.top + margin.bottom)
-		  .append("g")
-		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    d3.select("#alm > #loading").remove();
 
-		svg.append("text")
-			.text(d.source);
+    category.forEach(function(c) {
+        categoryTotal = 0;
 
-		svg.append("text")
-		    .attr("transform", "translate(15," + (margin.top + 10) + ")")
-			.text(d.count);
+        var categoryRow;
 
-		svg.append("rect")
-		    .attr("width", width)
-		    .attr("height", height)
-		    .attr("transform", "translate(50,0)")
-			.attr("fill", "grey")
-			.attr("fill-opacity", 0.1);
+        data[0]["sources"].forEach(function(source) {
+        var level;
+        var level_data = false;
+        var time_interval;
 
-		// x.domain(data.map(function(d) { return d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse(d.updated_at); }));
-		var published_date = d3.time.format.iso.parse("2012-10-10T00:00:00-07:00");
+        // determine what level we're defaulting to
+        if (source.by_day) {
+            level = 'day';
+            level_data = source.by_day;
+            timeInterval = d3.time.day;
+        } else if (source.by_month) {
+            level = 'month';
+            level_data = source.by_month;
+            timeInterval = d3.time.month;
+        } else if (source.by_year) {
+            level = 'year';
+            level_data = source.by_year;
+            timeInterval = d3.time.year
+        }
 
-		// want to set to 30 days regardless of what is actually in array
-		x.domain([published_date, d3.time.day.offset(published_date, 30)]);
+        if (level_data) {
+            // get the total for the source
+            var total = level_data.reduce(function(i, d) { return i + d[c.name]; }, 0);
 
-		x.range([0, width]);
-		x.ticks(d3.time.days, 1);
-		x.tickFormat("%b %d");
+            if (total > 0) {
+                console.log(level + ':' + c.name + ':' + total);
+                // keep track of the category's total
+                categoryTotal += total;
 
-		y.domain([0, d3.max(data.values())]);
+                if (!categoryRow) {
+                    categoryRow = canvas.append("div")
+                                .attr("class", "alm-category-row")
+                                .attr("style", "width: 100%; border: 1px solid #eee; overflow: hidden;")
+                                .attr("id", "category-" + c.name);
 
-		svg.append("g")
-		    .attr("class", "x axis")
-		    .attr("transform", "translate(50," + height + ")");
-		    // .call(xAxis);
+                    categoryRow.append("h2", "div.alm-category-row-heading" + c.name)
+                        .attr("class", "border-bottom")
+                        .attr("id", "month-" + c.name)
+                        .text(c.display_name);
 
-
-		// svg.append("g")
-		//     .attr("class", "y axis")
-		//     .call(yAxis)
-		//   .append("text")
-		//     .attr("transform", "rotate(-90)")
-		//     .attr("y", 6)
-		//     .attr("dy", ".71em")
-		//     .style("text-anchor", "end")
-		//     .text("Frequency");
+                    // flag that there is at least one metric
+                    metricsFound = true;
+                }
 
 
-		svg.selectAll(".bar")
-		    .data(data.keys())
-		  .enter().append("rect")
-		    .attr("class", "bar")
-		    .attr("x", function(d) { return 50+x(d3.time.format.iso.parse(d)); })
-		    .attr("width", width/30)
-		    .attr("y", function(d) { return y(data.get(d)); })
-		    .attr("height", function(d) { return height - y(data.get(d)); })
-			.attr("fill", "steelblue");
-		}
+                var row = categoryRow.append("div")
+                    .attr("class", "alm-row")
+                    .attr("style", "width: 100%; overflow: hidden;")
+                    .attr("id", "alm-row-" + source.name + "-" + c.name);
+
+                var countLabel = row.append("div")
+                    .attr("style", "width: 30%; float:left;")
+                    .attr("class", "alm-count-label");
+
+
+                if (source.events_url) {
+                    // if there is an events_url, we can link to it from the count
+                    countLabel.append("a")
+                      .attr("href", function(d) { return source.events_url; })
+                      .append("h1")
+                      .attr("class", "signpost")   // TODO: rename to a generic class name
+                      .attr("id", "signpost-" + source.name + "-" + c.name)
+                      .text(function(d) { return format_number(total); });
+                } else {
+                    // if no events_url, we just put in the count
+                    countLabel.append("h1")
+                        .attr("class", "signpost")
+                        .attr("id", "month-signpost-" + source.name + "-" + c.name)
+                        .text(function(d) { return format_number(total); });
+                }
+
+                // link the source name
+                countLabel.append("div").append("a")
+                    .attr("href", function(d) { return baseUrl + "/sources/" + source.name; })
+                    .text(function(d) { return source.display_name; });
+
+                // a container for the chart
+                var chartDiv = row.append("div")
+                    .attr("style", "width: 70%; float:left;")
+                    .attr("class", "alm-chart-area");
+
+                // the chart
+                var svg = chartDiv.append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                  .append("g")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+                // a time x axis, between pub_date and cur_date
+                // FIXME: why isn't .floor the right thing? .round seems wrong
+                var x = d3.time.scale();
+                x.domain([timeInterval.round(pub_date), timeInterval.ceil(cur_date)]);
+                x.range([0, width]);
+
+                // a linear y axis between 0 and max value found in data
+                var y = d3.scale.linear();
+                y.domain([0, d3.max(level_data, function(d) { return d[c.name]; })]);
+                y.range([height, 0]);
+
+                // set up the axis
+                var yAxis = d3.svg.axis()
+                    .scale(y)
+                    .orient("left")
+                    .tickSize(0)
+                    .tickValues([d3.max(y.domain())])   // only one tick at max
+                    .tickFormat(d3.format(",d"));       // n
+
+                var xAxis = d3.svg.axis()
+                    .scale(x)
+                    .tickSize(0)
+                    .ticks(0);
+
+                // TODO: add colors back in
+                // var z = d3.scale.ordinal()
+                //     .domain(level_data.map(function(d) { return d.year; }))
+                //     .range(colors);
+
+                svg.selectAll(".bar")
+                    .data(level_data)
+                  .enter().append("rect")
+                    .attr("class", "bar")
+                    .attr("x", function(d) { return x(get_format_date(level, d)); })
+                    .attr("width", width/(timeInterval.range(pub_date, cur_date).length + 1))
+                    .attr("y", function(d) { return y(d[c.name]); })
+                    .attr("height", function(d) { return height - y(d[c.name]); })
+                    .attr("stroke", "white")
+                    .attr("fill", "steelblue");
+
+                svg.append("g")
+                    .attr("class", "y axis")
+                    .call(yAxis);
+                svg.append("g")
+                    .attr("class", "x axis")
+                    .attr("transform", "translate(0," + height + ")")
+                    .call(xAxis);
+
+            // TODO: add tooltips back in
+            // chart.selectAll("rect").each(
+            //   function(d,i){ $(this).tooltip({title: format_number(d[c.name]) + " in " + format_date(new Date(d.year, d.month - 1)), container: "body"});
+            // });
+        }
+      }
+    });
+  });
+
+    if (!metricsFound) {
+        canvas.append("p")
+            .attr("class", "muted")
+            .text("No metrics found.");
+    }
 });
