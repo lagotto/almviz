@@ -62,7 +62,7 @@ function AlmViz(chartDiv, data, category) {
     this.y.range([this.height, 0]);
 }
 
-function changeData(viz, level, level_data, timeInterval) {
+function change(viz) {
     console.log(viz);
 }
 
@@ -71,12 +71,11 @@ function loadData(viz, level, level_data, timeInterval) {
 
 
     var category = viz.category;
-    var maxY = d3.max(level_data, function(d) { return d[category.name]; });
 
     // a time x axis, between pub_date and cur_date
     // FIXME: why isn't .floor the right thing? .round seems wrong
     viz.x.domain([timeInterval.round(viz.pub_date), timeInterval.ceil(viz.cur_date)]);
-    viz.y.domain([0, maxY]);
+    viz.y.domain([0, d3.max(level_data, function(d) { return d[category.name]; })]);
 
     // set up the axis
 
@@ -88,6 +87,7 @@ function loadData(viz, level, level_data, timeInterval) {
 
     // a linear y axis between 0 and max value found in data
     viz.yAxis = d3.svg.axis()
+        .scale(viz.y)
         .orient("left")
         .tickSize(0)
         .tickValues([d3.max(viz.y.domain())])   // only one tick at max
@@ -215,7 +215,7 @@ d3.json(dataUrl, function(data) {
                     chartDiv.append("a")
                             .attr("href", "#")
                             .text("test")
-                            .on("click", changeData);
+                            .on("click", function() { change(viz); });
 
                     // TODO: add tooltips back in
                     // chart.selectAll("rect").each(
