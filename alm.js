@@ -13,9 +13,31 @@ function get_format_date(level, d) {
         case 'year':
             return  new Date(d.year, 0, 0);
         case 'month':
-            return new Date(d.year, d.month, 1);
+            return new Date(d.year, d.month, 0);
         case 'day':
             return new Date(d.year, d.month, d.day);
+    }
+}
+
+function get_data(level, source) {
+    switch (level) {
+        case 'year':
+            return source.by_year;
+        case 'month':
+            return source.by_month;
+        case 'day':
+            return source.by_day;
+    }
+}
+
+function get_time_interval(level) {
+    switch (level) {
+        case 'year':
+            return d3.time.year;
+        case 'month':
+            return d3.time.month;
+        case 'day':
+            return d3.time.day;
     }
 }
 
@@ -25,28 +47,43 @@ var categories = [{ name: "html", display_name: "HTML Views" },
                 { name: "shares", display_name: "Shares" },
                 { name: "comments", display_name: "Comments" },
                 { name: "citations", display_name: "Citations" }];
-var categoryTotal;
 var metricsFound = false;
 var format_number = d3.format(",d")
+
+var charts = new Array();
 
 //var colors = ["#304345","#789aa1","#304345","#789aa1","#304345","#789aa1","#304345","#789aa1","#304345","#789aa1"];
 
 /* Graph visualization
  * @param chartDiv The div where the chart should go
  * @param data The raw data
- * @param category The category for this chart
+ * @param category The category for 86 chart
  */
-function AlmViz(chartDiv, data, category) {
+function AlmViz(chartDiv, pub_date, source, category) {
     // size parameters
-    this.margin = {top: 20, right: 20, bottom: 30, left: 40};
+    this.margin = {top: 10, right: 40, bottom: 0, left: 40};
     this.width = 600 - this.margin.left - this.margin.right;
     this.height = 300 - this.margin.top - this.margin.bottom;
 
+    // div where everything goes
     this.chartDiv = chartDiv;
-    this.data = data;
-    this.category = category;
+
+    // publication and current dates
     this.cur_date = new Date;
-    this.pub_date = d3.time.format.iso.parse(data[0]["publication_date"]);
+    this.pub_date = pub_date;
+
+    // source data and which category
+    this.category = category;
+    this.source = source;
+
+    // just for record keeping
+    this.name = source.name + '-' + category.name;
+
+    this.x = d3.time.scale();
+    this.x.range([0, this.width]);
+
+    this.y = d3.scale.linear();
+    this.y.range([this.height, 0]);
 
     // the chart
     this.svg = this.chartDiv.append("svg")
@@ -55,22 +92,22 @@ function AlmViz(chartDiv, data, category) {
       .append("g")
         .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
 
-    this.x = d3.time.scale();
-    this.x.range([0, this.width]);
+    this.bars = this.svg.append("g");
 
-    this.y = d3.scale.linear();
-    this.y.range([this.height, 0]);
+    this.svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + this.height + ")")
+    this.svg.append("g")
+        .attr("class", "y axis")
+
 }
 
-function change(viz) {
-    console.log(viz);
-}
-
-function loadData(viz, level, level_data, timeInterval) {
+function loadData(viz, level) {
     d3.select("#alm > #loading").remove();
 
-
     var category = viz.category;
+    var level_data = get_data(level, viz.source);
+    var timeInterval = get_time_interval(level);
 
     // a time x axis, between pub_date and cur_date
     // FIXME: why isn't .floor the right thing? .round seems wrong
@@ -98,9 +135,13 @@ function loadData(viz, level, level_data, timeInterval) {
     //     .domain(level_data.map(function(d) { return d.year; }))
     //     .range(colors);
 
-    viz.svg.selectAll(".bar")
+    // cannot use enter() and exit() because different
+    // level_data occupy the same index in the data array
+    viz.bars.selectAll(".bar").remove();
+
+    viz.bars.selectAll(".bar")
         .data(level_data)
-      .enter().append("rect")
+      .enter().insert("rect")
         .attr("class", "bar")
         .attr("x", function(d) { return viz.x(get_format_date(level, d)); })
         .attr("width", viz.width/(timeInterval.range(viz.pub_date, viz.cur_date).length + 1))
@@ -109,44 +150,34 @@ function loadData(viz, level, level_data, timeInterval) {
         .attr("stroke", "white")
         .attr("fill", "steelblue");
 
-    viz.svg.append("g")
-        .attr("class", "y axis")
+    viz.svg.select(".y.axis")
         .call(viz.yAxis);
 
-    viz.svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + viz.height + ")")
+    viz.svg.select(".x.axis")
         .call(viz.xAxis);
 }
 
-
 d3.json(dataUrl, function(data) {
+    var pub_date = d3.time.format.iso.parse(data[0]["publication_date"]);
+
     categories.forEach(function(category) {
-        categoryTotal = 0;
-
         var canvas = d3.select("#alm").append("div");
-
-
         var categoryRow;
 
         data[0]["sources"].forEach(function(source) {
-            var level;
-            var level_data = false;
+            var level = false;
 
             // determine what level we're defaulting to
             if (source.by_day) {
                 level = 'day';
-                level_data = source.by_day;
-                timeInterval = d3.time.day;
             } else if (source.by_month) {
                 level = 'month';
-                level_data = source.by_month;
-                timeInterval = d3.time.month;
             } else if (source.by_year) {
                 level = 'year';
-                level_data = source.by_year;
-                timeInterval = d3.time.year
             }
+
+            level_data = get_data(level, source);
+            timeInterval = get_time_interval(level);
 
             if (level_data) {
                 // get the total for the source
@@ -154,8 +185,6 @@ d3.json(dataUrl, function(data) {
 
                 if (total > 0) {
                     console.log(level + ':' + category.name + ':' + total);
-                    // keep track of the category's total
-                    categoryTotal += total;
 
                     if (!categoryRow) {
                         categoryRow = canvas.append("div")
@@ -204,18 +233,52 @@ d3.json(dataUrl, function(data) {
                         .attr("href", function(d) { return baseUrl + "/sources/" + source.name; })
                         .text(function(d) { return source.display_name; });
 
-                    // a container for the chart
                     var chartDiv = row.append("div")
                         .attr("style", "width: 70%; float:left;")
                         .attr("class", "alm-chart-area");
 
-                    var viz = new AlmViz(chartDiv, data, category);
-                    loadData(viz, level, level_data, timeInterval);
+                    var viz = new AlmViz(chartDiv, pub_date, source, category);
+                    loadData(viz, level);
 
-                    chartDiv.append("a")
-                            .attr("href", "#")
-                            .text("test")
-                            .on("click", function() { change(viz); });
+                    var levelControlsDiv = chartDiv.append("div")
+                            .attr("style", "width: " + (viz.margin.left + viz.width + viz.margin.right) + "px;")
+                          .append("div")
+                            .attr("style", "float:right;");
+
+
+                    if (source.by_day) {
+                        levelControlsDiv.append("a")
+                                .attr("href", 'javascript:void(0)')
+                                .text("day")
+                                .on("click", function() { loadData(viz, 'day'); });
+                    } else {
+                        levelControlsDiv.append("text")
+                                .text("day");
+                    }
+
+                    levelControlsDiv.append("text")
+                            .text(" | ");
+
+                    if (source.by_month) {
+                        levelControlsDiv.append("a")
+                                .attr("href", 'javascript:void(0)')
+                                .text("month")
+                                .on("click", function() { loadData(viz, 'month'); });
+                    } else {
+                        levelControlsDiv.append("text")
+                                .text("month");
+                    }
+
+                    levelControlsDiv.append("text")
+                            .text(" | ");
+
+                    levelControlsDiv.append("a")
+                            .attr("href", 'javascript:void(0)')
+                            .text("year")
+                            .on("click", function() { loadData(viz, 'year'); });
+
+                    console.log(source.name + '-' + category.name);
+                    charts[source.name + '-' + category.name] = viz;
 
                     // TODO: add tooltips back in
                     // chart.selectAll("rect").each(
