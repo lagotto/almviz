@@ -100,8 +100,8 @@ var charts = new Array();   // keep track of AlmViz objects
 function AlmViz(chartDiv, pub_date, source, category) {
     // size parameters
     this.margin = {top: 10, right: 40, bottom: 0, left: 40};
-    this.width = 600 - this.margin.left - this.margin.right;
-    this.height = 300 - this.margin.top - this.margin.bottom;
+    this.width = 400 - this.margin.left - this.margin.right;
+    this.height = 100 - this.margin.top - this.margin.bottom;
 
     // div where everything goes
     this.chartDiv = chartDiv;
@@ -191,47 +191,48 @@ function loadData(viz, level) {
     //
     // The chart itself
     //
-    var transition = viz.svg.transition().duration(1500);
 
-    transition.select(".y.axis")
-        .call(viz.yAxis);
-
-    transition.select(".x.axis")
-        .call(viz.xAxis);
-
-//    var bars = transition.selectAll(".bar")
-//        .attr("y", function(d) { return viz.y(d[category.name]); })
-//        .attr("height", function(d) { return viz.height - viz.y(d[category.name]); });
-
-
-    // cannot use enter() and exit() because different
-    // level_data occupy the same index in the data array
-//    transition.delay(1000).selectAll(".bar").remove();
-
+    // TODO: these transitions could use a little work
     var bars = viz.bars.selectAll(".bar")
-        .data(level_data);
+        .data(level_data, function(d) { return get_date(level, d); });
 
     bars
       .enter().append("rect")
         .attr("class", function(d) { return "bar " + viz.z((level == 'day' ? d3.time.weekOfYear(get_date(level, d)) : d.year)); })
-        .attr("width", viz.width/(timeInterval.range(pub_date, end_date).length + 1))
-        .attr("x", function(d) { return viz.x(get_date(level, d)); })
+
+
         .attr("y", viz.height)
         .attr("height", 0);
 
+    bars
+        .attr("x", function(d) { return viz.x(get_date(level, d)); })
+        .attr("width", viz.width/(timeInterval.range(pub_date, end_date).length + 1));
+
     bars.transition()
         .duration(1000)
-        .delay(1000)
+        .attr("width", viz.width/(timeInterval.range(pub_date, end_date).length + 1))
         .attr("y", function(d) { return viz.y(d[category.name]); })
         .attr("height", function(d) { return viz.height - viz.y(d[category.name]); });
 
+    bars
+      .exit().transition()
+        .attr("y", viz.height)
+        .attr("height", 0);
+
+    bars
+      .exit().transition().delay(1000)
+        .remove();
+
+    viz.svg.select(".y.axis")
+        .call(viz.yAxis);
+
+    viz.svg.select(".x.axis")
+        .call(viz.xAxis);
 
     // add in some tool tips
     viz.bars.selectAll("rect").each(
        function(d,i){ $(this).tooltip({title: format_number(d[category.name]) + " in " + get_formatted_date(level, d), container: "body"});
     });
-
-
 }
 
 d3.json(dataUrl, function(data) {
@@ -274,21 +275,20 @@ d3.json(dataUrl, function(data) {
                     .attr("class", "alm-count-label");
 
 
+                var count;
                 if (source.events_url) {
                     // if there is an events_url, we can link to it from the count
-                    countLabel.append("a")
-                      .attr("href", function(d) { return source.events_url; })
-                      .append("h1")
-                      .attr("class", "signpost")   // TODO: rename to a generic class name
-                      .attr("id", "signpost-" + source.name + "-" + category.name)
-                      .text(function(d) { return format_number(total); });
+                    count = countLabel.append("a")
+                      .attr("href", function(d) { return source.events_url; });
                 } else {
                     // if no events_url, we just put in the count
-                    countLabel.append("h1")
-                        .attr("class", "signpost")
-                        .attr("id", "month-signpost-" + source.name + "-" + category.name)
-                        .text(function(d) { return format_number(total); });
+                    count = countLabel.append("span");
                 }
+
+                count
+                    .attr("class", "alm-count")
+                    .attr("id", "alm-count-" + source.name + "-" + category.name)
+                    .text(function(d) { return format_number(total); });
 
                 // link the source name
                 countLabel.append("div").append("a")
