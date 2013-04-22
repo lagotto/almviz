@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+	<head>
+		<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap.tooltip.min.js"></script>
+
+		<script type="text/javascript" src="js/d3.v3.min.js"></script>
+
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.tooltip.min.css" />
+		<style>
+		body {
+			font-family: sans-serif;
+		}
+
+
+		.alm {
+			font-family: sans-serif;
+		}
+		.alm-chart-area {
+   			font-size: 11px;
+		}
+
+		.axis line,
+		.axis path {
+		    fill: none;
+		    stroke: black;
+			stroke-width: 1;
+		    shape-rendering: crispEdges;
+		}
+
+		.bar.main{
+			fill: #789aa1;
+		}
+
+		.bar.alt{
+			fill: #304345;
+		}
+
+		.alm-row {
+			min-height:150px;
+			height:auto !important;
+			height:150px;
+		}
+
+		.alm-count-label {
+			text-align: center;
+		}
+
+		.alm-count {
+			font-size: 2em;
+			margin-top: 0.67em;
+			margin-bottom: 0.67em;
+			font-weight: bold;
+		}
+
+		.alm-control {
+			text-decoration: underline;
+			color: blue;
+		}
+
+		.alm-control.active {
+			text-decoration: none;
+			color: blue;
+		}
+
+		.alm-control.disabled {
+			cursor: default;
+			text-decoration: none;
+			color: grey;
+		}
+
+		</style>
+
+</head>
+	<body>
+	<h1>ALM-VIZ</h1>
+
+	<div id="alm"><div id="loading">Metrics Loading...</div></div>
+
+    <script type="text/javascript" src="alm.js"></script>
+
+	<p>Built with <a href="http://d3js.org/">d3.js</a></p>
+	</body>
+</html>
