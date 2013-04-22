@@ -8,17 +8,19 @@
 
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.tooltip.min.css" />
 		<style>
+		.alm {
+			font-family: sans-serif;
+		}
+		.alm-chart-area {
+   			font-size: 11px;
+		}
+
 		.axis line,
 		.axis path {
 		    fill: none;
 		    stroke: black;
 			stroke-width: 1;
 		    shape-rendering: crispEdges;
-		}
-
-		.axis text {
-		    font-family: sans-serif;
-		    font-size: 11px;
 		}
 
 		.bar.main{
@@ -29,6 +31,21 @@
 			fill: #304345;
 		}
 
+		.alm-control {
+			text-decoration: underline;
+			color: blue;
+		}
+
+		.alm-control.active {
+			text-decoration: none;
+			color: blue;
+		}
+
+		.alm-control.disabled {
+			cursor: default;
+			text-decoration: none;
+			color: grey;
+		}
 
 		</style>
 
@@ -38,10 +55,8 @@
 
 	<div id="alm"><div id="loading">Metrics Loading...</div></div>
 
-	<script src="alm.js"></script>
+    <script type="text/javascript" src="alm.js"></script>
 
-	<p>Built with <a href="http://d3js.org/">d3.js</a>.
-	</div>
-
+	<p>Built with <a href="http://d3js.org/">d3.js</a></p>
 	</body>
 </html>
