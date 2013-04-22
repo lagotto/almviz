@@ -1,21 +1,36 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 	<head>
-<style>
-.axis path,
-.axis line {
-    fill: none;
-    stroke: black;
-    shape-rendering: crispEdges;
-}
+		<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap.tooltip.min.js"></script>
 
-.axis text {
-    font-family: sans-serif;
-    font-size: 11px;
-}
-</style>
-<script type="text/javascript" src="jquery.min.js"></script>
-<script src="d3.v3.min.js"></script>
+		<script type="text/javascript" src="js/d3.v3.min.js"></script>
+
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.tooltip.min.css" />
+		<style>
+		.axis line,
+		.axis path {
+		    fill: none;
+		    stroke: black;
+			stroke-width: 1;
+		    shape-rendering: crispEdges;
+		}
+
+		.axis text {
+		    font-family: sans-serif;
+		    font-size: 11px;
+		}
+
+		.bar.main{
+			fill: #789aa1;
+		}
+
+		.bar.alt{
+			fill: #304345;
+		}
+
+
+		</style>
 
 </head>
 	<body>
