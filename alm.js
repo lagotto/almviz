@@ -10,6 +10,15 @@ var dataUrl = baseUrl + 'alm.json'
 
 var hasSVG = document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1");
 
+//
+// Configuration for when to show graphs
+//
+var minEventsForYearly, minEventsForMonthly, minEventsForDaily;
+var minYearsForYearly, minMonthsForMonthly, minDaysForDaily;
+
+minEventsForYearly = minEventsForMonthly = minEventsForDaily =  6;
+minYearsForYearly = minMonthsForMonthly = minDaysForDaily = 6;
+
 /**
  * Extract the date from the source
  * @param level (day|month|year)
@@ -158,15 +167,18 @@ function loadData(viz, level) {
 
     var end_date = new Date();
     // use only first 29 days if using day view
+    // close out the year otherwise
     if ( level == 'day' ) {
         end_date = timeInterval.offset(pub_date, 29);
+    } else {
+        end_date = d3.time.year.utc.ceil(end_date);
     }
 
     //
     // Domains for x and y
     //
     // a time x axis, between pub_date and end_date
-    viz.x.domain([timeInterval.floor(pub_date), timeInterval.ceil(end_date)]);
+    viz.x.domain([timeInterval.floor(pub_date), end_date]);
 
     // a linear axis from 0 to max value found
     viz.y.domain([0, d3.max(level_data, function(d) { return d[category.name]; })]);
@@ -231,8 +243,11 @@ function loadData(viz, level) {
 
     // add in some tool tips
     viz.bars.selectAll("rect").each(
-       function(d,i){ $(this).tooltip({title: format_number(d[category.name]) + " in " + get_formatted_date(level, d), container: "body"});
-    });
+       function(d,i){
+           $(this).tooltip('destroy'); // need to destroy so all bars get updated
+           $(this).tooltip({title: format_number(d[category.name]) + " in " + get_formatted_date(level, d), container: "body"});
+        }
+    );
 }
 
 d3.json(dataUrl, function(data) {
@@ -296,27 +311,61 @@ d3.json(dataUrl, function(data) {
                     .text(function(d) { return source.display_name; });
             }
 
-            var level = false;
+            // If there is not SVG, do not even try the charts
+            if ( hasSVG ) {
+                var level = false;
+                var level_total = 0;
 
-            // determine what level we're defaulting to
-            // set level to lowest level of granularity available
-            if (source.by_day) {
-                level = 'day';
-            } else if (source.by_month) {
-                level = 'month';
-            } else if (source.by_year) {
-                level = 'year';
-            }
+                // check what levels we can show
+                var showDaily = false;
+                var showMonthly = false;
+                var showYearly = false;
 
-            // check there is data for
-            if (level && hasSVG) {
-                level_data = get_data(level, source);
+                if (source.by_year) {
+                    level_data = get_data('year', source);
+                    var yearTotal = level_data.reduce(function(i, d) { return i + d[category.name]; }, 0);
+                    var numYears = d3.time.year.utc.range(pub_date, new Date()).length
+
+                    if (yearTotal >= minEventsForYearly && numYears >= minYearsForYearly) {
+                        showYearly = true;
+                        level = 'year';
+                        level_total = yearTotal;
+                    }
+                }
+
+                if (source.by_month) {
+                    level_data = get_data('month', source);
+                    var monthTotal = level_data.reduce(function(i, d) { return i + d[category.name]; }, 0);
+                    var numMonths = d3.time.month.utc.range(pub_date, new Date()).length
+
+                    console.log(level_total);
+                    console.log(minEventsForMonthly);
+                    console.log(numMonths);
+                    console.log(minMonthsForMonthly);
+                    if (monthTotal >= minEventsForMonthly && numMonths >= minMonthsForMonthly) {
+                        showMonthly = true;
+                        level = 'month';
+                        level_total = monthTotal
+                    }
+                }
+
+                if (source.by_day){
+                    level_data = get_data('day', source);
+                    var dayTotal = level_data.reduce(function(i, d) { return i + d[category.name]; }, 0);
+                    var numMonths = d3.time.month.utc.range(pub_date, new Date()).length
+
+                    if (dayTotal >= minEventsForDaily && numDays >= minMonthsForDaily) {
+                        showDaily = true;
+                        level = 'day';
+                        level_total = dayTotal;
+                    }
+                }
+                // The level level_data, and level_total should be set to the finest level
+                // of granularity that we can show
                 timeInterval = get_time_interval(level);
 
-                // get the total for the source
-                var level_total = level_data.reduce(function(i, d) { return i + d[category.name]; }, 0);
-
-                if (level_total) {
+                // check there is data for
+                if ( showDaily || showMonthly || showYearly ) {
                     var chartDiv = row.append("div")
                         .attr("style", "width: 70%; float:left;")
                         .attr("class", "alm-chart-area");
@@ -337,7 +386,7 @@ d3.json(dataUrl, function(data) {
                     levelControlsDiv.append("a")
                             .attr("href", "javascript:void(0)")
                             .classed("alm-control", true)
-                            .classed("disabled", !Boolean(source.by_day))
+                            .classed("disabled", !showDaily)
                             .classed("active", (level == 'day'))
                             .text("daily (first 30)")
                             .on("click", function() { if (source.by_day && !$(this).hasClass('active')) {
@@ -351,7 +400,7 @@ d3.json(dataUrl, function(data) {
                     levelControlsDiv.append("a")
                             .attr("href", "javascript:void(0)")
                             .classed("alm-control", true)
-                            .classed("disabled", !Boolean(source.by_month))
+                            .classed("disabled", !showMonthly)
                             .classed("active", (level == 'month'))
                             .text("monthly")
                             .on("click", function() { if (source.by_month && !$(this).hasClass('active')) {
@@ -365,7 +414,7 @@ d3.json(dataUrl, function(data) {
                     levelControlsDiv.append("a")
                             .attr("href", "javascript:void(0)")
                             .classed("alm-control", true)
-                            .classed("disabled", !Boolean(source.by_year))
+                            .classed("disabled", !showYearly)
                             .classed("active", (level == 'year'))
                             .text("yearly")
                             .on("click", function() { if (source.by_year && !$(this).hasClass('active')) {
