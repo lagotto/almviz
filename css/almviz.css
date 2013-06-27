@@ -39,7 +39,9 @@ body {
 	font-size: 2em;
 	margin-top: 0.67em;
 	margin-bottom: 0.67em;
+    margin-left: 5px;
 	font-weight: bold;
+    text-decoration: none;
 }
 
 .alm-control {
