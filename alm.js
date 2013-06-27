@@ -2,11 +2,11 @@
 
 // var dataUrl = "/api/v3/articles/info:doi/" + doi + "?info=history";
 
-var baseUrl = 'http://alm.publicknowledgeproject.org';
-var baseUrl = '';
+var baseUrl = 'http://pkp-alm.lib.sfu.ca';
+// var baseUrl = '';
 
 var doi = '10.3402/meo.v15i0.4846';
-var dataUrl = baseUrl + 'alm.json'
+var dataUrl = 'alm.json'
 
 var hasSVG = document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1");
 
@@ -18,6 +18,8 @@ var minYearsForYearly, minMonthsForMonthly, minDaysForDaily;
 
 minEventsForYearly = minEventsForMonthly = minEventsForDaily =  6;
 minYearsForYearly = minMonthsForMonthly = minDaysForDaily = 6;
+
+var hasIcon = Array('wikipedia', 'scienceseeker', 'researchblogging', 'pubmed', 'nature', 'mendeley', 'facebook', 'crossref', 'citeulike');
 
 /**
  * Extract the date from the source
@@ -217,8 +219,8 @@ function loadData(viz, level) {
         .attr("height", 0);
 
     bars
-        .attr("x", function(d) { return viz.x(get_date(level, d)) + 1; }) // padding of 2, 1 each side
-        .attr("width", (viz.width/(timeInterval.range(pub_date, end_date).length + 1))-2);
+        .attr("x", function(d) { return viz.x(get_date(level, d)) + 2; }) // padding of 2, 1 each side
+        .attr("width", (viz.width/(timeInterval.range(pub_date, end_date).length + 1)) - 2);
 
     bars.transition()
         .duration(1000)
@@ -289,10 +291,11 @@ d3.json(dataUrl, function(data) {
                     .attr("style", "width: 30%; float:left;")
                     .attr("class", "alm-count-label");
 
-                countLabel.append("img")
-                    .attr("src", baseUrl + '/assets/' + source.name + '.png')
-                    .attr("alt", 'a description of the source');
-
+                if (hasIcon.indexOf(source.name) >= 0) {
+                    countLabel.append("img")
+                        .attr("src", baseUrl + '/assets/' + source.name + '.png')
+                        .attr("alt", 'a description of the source');
+                }
 
                 var count;
                 if (source.events_url) {
