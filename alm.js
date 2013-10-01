@@ -435,22 +435,27 @@ d3.json(dataUrl, function(data) {
                                  .text(" | ");
                      }
 
-                     levelControlsDiv.append("a")
-                             .attr("href", "javascript:void(0)")
-                             .classed("alm-control", true)
-                             .classed("disabled", !showMonthly || !showYearly)
-                             .classed("active", (level == 'month'))
-                             .text("monthly")
-                             .on("click", function() { if (showMonthly && !$(this).hasClass('active')) {
-                                                             loadData(viz, 'month');
-                                                             update_controls($(this));
-                                                         } });
+                     if (showMonthly) {
+                         levelControlsDiv.append("a")
+                                 .attr("href", "javascript:void(0)")
+                                 .classed("alm-control", true)
+                                 .classed("disabled", !showMonthly || !showYearly)
+                                 .classed("active", (level == 'month'))
+                                 .text("monthly")
+                                 .on("click", function() { if (showMonthly && !$(this).hasClass('active')) {
+                                                                 loadData(viz, 'month');
+                                                                 update_controls($(this));
+                                                             } });
+
+                            if (showYearly) {
+                                 levelControlsDiv.append("text")
+                                     .text(" | ");
+                            }
+
+                     }
 
                     if (showYearly) {
-                        levelControlsDiv.append("text")
-                            .text(" | ");
-
-                     levelControlsDiv.append("a")
+                         levelControlsDiv.append("a")
                              .attr("href", "javascript:void(0)")
                              .classed("alm-control", true)
                              .classed("disabled", !showYearly || !showMonthly)
