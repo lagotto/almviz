@@ -1,14 +1,25 @@
 // var doi = d3.select("dd#doi").attr('data-doi');
 
-// var dataUrl = "/api/v3/articles/info:doi/" + doi + "?info=history";
+var baseUrl = 'http://alm.plos.org';
+// var baseUrl = '';
 
-var baseUrl = 'http://alm.publicknowledgeproject.org';
-var baseUrl = '';
+var doi = 'doi/10.1371/journal.pone.0035869';
 
-var doi = '10.3402/meo.v15i0.4846';
-var dataUrl = baseUrl + 'alm.json'
+var dataUrl = 'alm.json'
+// var dataUrl =  "/api/v3/articles/info:doi/" + doi + "?info=history";
 
 var hasSVG = document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1");
+
+//
+// Configuration for when to show graphs
+//
+var minEventsForYearly, minEventsForMonthly, minEventsForDaily;
+var minYearsForYearly, minMonthsForMonthly, minDaysForDaily;
+
+minEventsForYearly = minEventsForMonthly = minEventsForDaily =  6;
+minYearsForYearly = minMonthsForMonthly = minDaysForDaily = 6;
+
+var hasIcon = Array('wikipedia', 'scienceseeker', 'researchblogging', 'pubmed', 'nature', 'mendeley', 'facebook', 'crossref', 'citeulike');
 
 /**
  * Extract the date from the source
@@ -132,14 +143,18 @@ function AlmViz(chartDiv, pub_date, source, category) {
       .append("g")
         .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
 
+
     // draw the bars g first so it ends up underneath the axes
     this.bars = this.svg.append("g");
 
+    // and the shadow bars on top for the tooltips
+    this.barsForTooltips = this.svg.append("g");
+
     this.svg.append("g")
         .attr("class", "x axis")
-        .attr("transform", "translate(0," + (this.height - 1) + ")")
+        .attr("transform", "translate(0," + (this.height - 1) + ")");
     this.svg.append("g")
-        .attr("class", "y axis")
+        .attr("class", "y axis");
 
 }
 
@@ -158,15 +173,19 @@ function loadData(viz, level) {
 
     var end_date = new Date();
     // use only first 29 days if using day view
+    // close out the year otherwise
     if ( level == 'day' ) {
         end_date = timeInterval.offset(pub_date, 29);
+    } else {
+        end_date = d3.time.year.utc.ceil(end_date);
     }
 
     //
     // Domains for x and y
     //
+
     // a time x axis, between pub_date and end_date
-    viz.x.domain([timeInterval.floor(pub_date), timeInterval.ceil(end_date)]);
+    viz.x.domain([timeInterval.floor(pub_date), end_date]);
 
     // a linear axis from 0 to max value found
     viz.y.domain([0, d3.max(level_data, function(d) { return d[category.name]; })]);
@@ -191,26 +210,32 @@ function loadData(viz, level) {
     //
     // The chart itself
     //
-
     // TODO: these transitions could use a little work
+    var barWidth = Math.max((viz.width/(timeInterval.range(pub_date, end_date).length + 1)) - 2, 1);
+
+    var barsForTooltips = viz.barsForTooltips.selectAll(".barsForTooltip")
+        .data(level_data, function(d) { return get_date(level, d); });
+
+    barsForTooltips
+      .exit()
+        .remove();
+
     var bars = viz.bars.selectAll(".bar")
         .data(level_data, function(d) { return get_date(level, d); });
 
     bars
       .enter().append("rect")
         .attr("class", function(d) { return "bar " + viz.z((level == 'day' ? d3.time.weekOfYear(get_date(level, d)) : d.year)); })
-
-
         .attr("y", viz.height)
         .attr("height", 0);
 
     bars
-        .attr("x", function(d) { return viz.x(get_date(level, d)); })
-        .attr("width", viz.width/(timeInterval.range(pub_date, end_date).length + 1));
+        .attr("x", function(d) { return viz.x(get_date(level, d)) + 2; }) // padding of 2, 1 each side
+        .attr("width", barWidth);
 
     bars.transition()
         .duration(1000)
-        .attr("width", viz.width/(timeInterval.range(pub_date, end_date).length + 1))
+        .attr("width", barWidth)
         .attr("y", function(d) { return viz.y(d[category.name]); })
         .attr("height", function(d) { return viz.height - viz.y(d[category.name]); });
 
@@ -220,29 +245,54 @@ function loadData(viz, level) {
         .attr("height", 0);
 
     bars
-      .exit().transition().delay(1000)
+      .exit() // .transition().delay(1000)
         .remove();
 
-    viz.svg.select(".y.axis")
-        .call(viz.yAxis);
-
-    viz.svg.select(".x.axis")
+    viz.svg
+        .select(".x.axis")
         .call(viz.xAxis);
 
+    viz.svg
+        .transition().duration(1000)
+        .select(".y.axis")
+        .call(viz.yAxis);
+
+    barsForTooltips
+      .enter().append("rect")
+        .attr("class", function(d) { return "barsForTooltip " + viz.z((level == 'day' ? d3.time.weekOfYear(get_date(level, d)) : d.year)); });
+
+    barsForTooltips
+        .attr("width", barWidth + 2)
+        .attr("x", function(d) { return viz.x(get_date(level, d)) + 1; })
+        .attr("y", function(d) { return viz.y(d[category.name]) - 1; })
+        .attr("height", function(d) { return viz.height - viz.y(d[category.name]) + 1; });
+
+
     // add in some tool tips
-    viz.bars.selectAll("rect").each(
-       function(d,i){ $(this).tooltip({title: format_number(d[category.name]) + " in " + get_formatted_date(level, d), container: "body"});
-    });
+    viz.barsForTooltips.selectAll("rect").each(
+       function(d,i){
+           $(this).tooltip('destroy'); // need to destroy so all bars get updated
+           $(this).tooltip({title: format_number(d[category.name]) + " in " + get_formatted_date(level, d), container: "body"});
+        }
+    );
 }
 
 d3.json(dataUrl, function(data) {
     // extract publication date
     var pub_date = d3.time.format.iso.parse(data[0]["publication_date"]);
 
+    var canvas = d3.select("#alm");
+
+    canvas.append("a")
+        .attr('href', 'http://dx.doi.org/' + data[0].doi)
+        .attr("class", "title")
+        .text(data[0].title);
+
     // loop through categories
     categories.forEach(function(category) {
-        var canvas = d3.select("#alm").append("div")
+        canvas.append("div")
                 .attr("class", "alm");
+
         var categoryRow = false;
 
         // loop through sources
@@ -253,7 +303,7 @@ d3.json(dataUrl, function(data) {
                 if (!categoryRow) {
                     categoryRow = canvas.append("div")
                                 .attr("class", "alm-category-row")
-                                .attr("style", "width: 100%; border: 1px solid #eee; overflow: hidden;")
+                                .attr("style", "width: 100%; overflow: hidden;")
                                 .attr("id", "category-" + category.name);
 
                     categoryRow.append("h2", "div.alm-category-row-heading" + category.name)
@@ -265,15 +315,21 @@ d3.json(dataUrl, function(data) {
                     metricsFound = true;
                 }
 
-                var row = categoryRow.append("div")
-                    .attr("class", "alm-row")
-                    .attr("style", "width: 100%; overflow: hidden;")
-                    .attr("id", "alm-row-" + source.name + "-" + category.name);
+                var row = categoryRow
+                    .append("div")
+                        .attr("class", "alm-row")
+                        .attr("style", "float: left")
+                        .attr("id", "alm-row-" + source.name + "-" + category.name);
 
                 var countLabel = row.append("div")
-                    .attr("style", "width: 30%; float:left;")
                     .attr("class", "alm-count-label");
 
+                if (hasIcon.indexOf(source.name) >= 0) {
+                    countLabel.append("img")
+                        .attr("src", baseUrl + '/assets/' + source.name + '.png')
+                        .attr("alt", 'a description of the source')
+                        .attr("class", "label-img");
+                }
 
                 var count;
                 if (source.events_url) {
@@ -290,33 +346,62 @@ d3.json(dataUrl, function(data) {
                     .attr("id", "alm-count-" + source.name + "-" + category.name)
                     .text(function(d) { return format_number(total); });
 
+
+                countLabel.append("br");
+
                 // link the source name
-                countLabel.append("div").append("a")
+                countLabel.append("a")
                     .attr("href", function(d) { return baseUrl + "/sources/" + source.name; })
                     .text(function(d) { return source.display_name; });
             }
 
-            var level = false;
+            // If there is not SVG, do not even try the charts
+            if ( hasSVG ) {
+                var level = false;
 
-            // determine what level we're defaulting to
-            // set level to lowest level of granularity available
-            if (source.by_day) {
-                level = 'day';
-            } else if (source.by_month) {
-                level = 'month';
-            } else if (source.by_year) {
-                level = 'year';
-            }
+                // check what levels we can show
+                var showDaily = false;
+                var showMonthly = false;
+                var showYearly = false;
 
-            // check there is data for
-            if (level && hasSVG) {
-                level_data = get_data(level, source);
+                if (source.by_year) {
+                    level_data = get_data('year', source);
+                    var yearTotal = level_data.reduce(function(i, d) { return i + d[category.name]; }, 0);
+                    var numYears = d3.time.year.utc.range(pub_date, new Date()).length
+
+                    if (yearTotal >= minEventsForYearly && numYears >= minYearsForYearly) {
+                        showYearly = true;
+                        level = 'year';
+                    }
+                }
+
+                if (source.by_month) {
+                    level_data = get_data('month', source);
+                    var monthTotal = level_data.reduce(function(i, d) { return i + d[category.name]; }, 0);
+                    var numMonths = d3.time.month.utc.range(pub_date, new Date()).length
+
+                    if (monthTotal >= minEventsForMonthly && numMonths >= minMonthsForMonthly) {
+                        showMonthly = true;
+                        level = 'month';
+                    }
+                }
+
+                if (source.by_day){
+                    level_data = get_data('day', source);
+                    var dayTotal = level_data.reduce(function(i, d) { return i + d[category.name]; }, 0);
+                    var numDays = d3.time.day.utc.range(pub_date, new Date()).length
+
+                    if (dayTotal >= minEventsForDaily && numDays >= minDaysForDaily) {
+                        showDaily = true;
+                        level = 'day';
+                    }
+                }
+                // The level level_data should be set to the finest level
+                // of granularity that we can show
                 timeInterval = get_time_interval(level);
 
-                // get the total for the source
-                var level_total = level_data.reduce(function(i, d) { return i + d[category.name]; }, 0);
-
-                if (level_total) {
+                // check there is data for
+                if ( showDaily || showMonthly || showYearly ) {
                     var chartDiv = row.append("div")
                         .attr("style", "width: 70%; float:left;")
                         .attr("class", "alm-chart-area");
@@ -334,48 +419,62 @@ d3.json(dataUrl, function(data) {
                           .append("div")
                             .attr("style", "float:right;");
 
-                    levelControlsDiv.append("a")
-                            .attr("href", "javascript:void(0)")
-                            .classed("alm-control", true)
-                            .classed("disabled", !Boolean(source.by_day))
-                            .classed("active", (level == 'day'))
-                            .text("daily (first 30)")
-                            .on("click", function() { if (source.by_day && !$(this).hasClass('active')) {
-                                                            loadData(viz, 'day');
-                                                            update_controls($(this));
-                                                        } });
+                    if (showDaily) {
+                         levelControlsDiv.append("a")
+                                 .attr("href", "javascript:void(0)")
+                                 .classed("alm-control", true)
+                                 .classed("disabled", !showDaily)
+                                 .classed("active", (level == 'day'))
+                                 .text("daily (first 30)")
+                                 .on("click", function() { if (showDaily && !$(this).hasClass('active')) {
+                                                                 loadData(viz, 'day');
+                                                                 update_controls($(this));
+                                                             } });
 
-                    levelControlsDiv.append("text")
-                            .text(" | ");
+                         levelControlsDiv.append("text")
+                                 .text(" | ");
+                     }
 
-                    levelControlsDiv.append("a")
-                            .attr("href", "javascript:void(0)")
-                            .classed("alm-control", true)
-                            .classed("disabled", !Boolean(source.by_month))
-                            .classed("active", (level == 'month'))
-                            .text("monthly")
-                            .on("click", function() { if (source.by_month && !$(this).hasClass('active')) {
-                                                            loadData(viz, 'month');
-                                                            update_controls($(this));
-                                                        } });
+                     if (showMonthly) {
+                         levelControlsDiv.append("a")
+                                 .attr("href", "javascript:void(0)")
+                                 .classed("alm-control", true)
+                                 .classed("disabled", !showMonthly || !showYearly)
+                                 .classed("active", (level == 'month'))
+                                 .text("monthly")
+                                 .on("click", function() { if (showMonthly && !$(this).hasClass('active')) {
+                                                                 loadData(viz, 'month');
+                                                                 update_controls($(this));
+                                                             } });
 
-                    levelControlsDiv.append("text")
-                            .text(" | ");
+                            if (showYearly) {
+                                 levelControlsDiv.append("text")
+                                     .text(" | ");
+                            }
 
-                    levelControlsDiv.append("a")
-                            .attr("href", "javascript:void(0)")
-                            .classed("alm-control", true)
-                            .classed("disabled", !Boolean(source.by_year))
-                            .classed("active", (level == 'year'))
-                            .text("yearly")
-                            .on("click", function() { if (source.by_year && !$(this).hasClass('active')) {
-                                                            loadData(viz, 'year');
-                                                            update_controls($(this));
-                                                        } });
+                     }
 
+                    if (showYearly) {
+                         levelControlsDiv.append("a")
+                             .attr("href", "javascript:void(0)")
+                             .classed("alm-control", true)
+                             .classed("disabled", !showYearly || !showMonthly)
+                             .classed("active", (level == 'year'))
+                             .text("yearly")
+                             .on("click", function() { if (showYearly && !$(this).hasClass('active')) {
+                                                             loadData(viz, 'year');
+                                                             update_controls($(this));
+                                                         } });
+                    }
 
                     // keep track of all instances (mostly for debugging at this point)
                     charts[source.name + '-' + category.name] = viz;
+
+                    // add a clearer and styles to ensure graphs on their own line
+                    row.insert("div", ":first-child")
+                          .attr('style', 'clear:both')
+                    row.attr('style', "width: 100%")
+
                 }
             }
         });
