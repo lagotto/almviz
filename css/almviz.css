@@ -1,11 +1,6 @@
-body {
-    font-family: sans-serif;
-    width: 800px;
-}
-
 .alm {
-    font-size: 11pt;
-	font-family: sans-serif;
+    font-size: 1em;
+
 	margin-bottom: 15px;
 }
 
@@ -43,6 +38,10 @@ body {
     margin-bottom: 1em;
 }
 
+.alm-category-row-heading {
+    font-size: 1.2em;
+}
+
 .alm-category-row-info {
 	display: inline-block;
 	width: 14px;
@@ -62,17 +61,17 @@ body {
 	margin-right: 2em;
 	padding: 0.8em;
 	text-align: center;
-    background: #dfeffc;
-    font-size: .75em;
-    color: #555;
-    border: 1px solid #c5dbec;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
+	border: 1px solid #c5dbec; 
+	background: #c8d7d7;  
+	-moz-border-radius: 5px; 
+	-webkit-border-radius: 5px; 
+	border-radius: 5px;
+	color: #304345;	
+	
 }
 
 .alm-count-label a {
-    color: #2e6e9e;
+    text-decoration: none;
 }
 
 .alm-count-label a:hover {
@@ -80,16 +79,12 @@ body {
 	color: #555555 !important;
 }
 
-.alm-count-label a {
-    text-decoration: none;
-}
-
 .alm-count-label img {
 	padding-right:0.5em;
 }
 
 .alm-count {
-	font-size: 1.25em;
+	font-size: 1.15em;
 	padding-bottom: 0.4em;
 	padding-top: 0.4em;
 	font-weight: bold;
@@ -103,7 +98,6 @@ body {
 
 .alm-control.active {
 	text-decoration: none;
-	color: blue;
 }
 
 .alm-control.disabled {
@@ -112,7 +106,7 @@ body {
 	color: grey;
 }
 
-.alm-control.disabled:hover {
+.alm-control:hover {
 	background-color: transparent;
 }
 
