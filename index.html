@@ -1,14 +1,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 	<head>
-		<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
 		<script type="text/javascript" src="js/bootstrap.tooltip.min.js"></script>
 
 		<script type="text/javascript" src="js/d3.v3.min.js"></script>
 
+		<style>
+		body {
+			width: 800px;
+			font-family: arial
+		}
+		</style>
 
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.tooltip.min.css" />
 		<link rel="stylesheet" type="text/css" href="css/almviz.css" />
+		<link rel="stylesheet" type="text/css" href="css/jqueryUi.css" />
     </head>
 	<body>
 	<h1>ALM-VIZ</h1>
@@ -16,7 +23,36 @@
 	<div id="alm"><div id="loading">Metrics Loading...</div></div>
 
     <script type="text/javascript" src="alm.js"></script>
+	
+    <script type="text/javascript">
+		options = {
+					baseUrl: 'http://pkp-alm.lib.sfu.ca',
+					minItemsToShowGraph: {
+							minEventsForYearly: 6,
+							minEventsForMonthly: 6,
+							minEventsForDaily: 6,
+							minYearsForYearly: 6,
+							minMonthsForMonthly: 6,
+							minDaysForDaily: 6
+							}, 
+					hasIcon: ['wikipedia', 'scienceseeker', 'researchblogging', 'pubmed', 'nature', 'mendeley', 'facebook', 'crossref', 'citeulike'],
+					showTitle: true,
+					categories: [{ name: "html", display_name: "HTML Views", tooltip_text: 'Total number of HTML page views for this article. These views are recorded directly within the system itself. Overall monthly view counts may also be available.' },
+							{ name: "pdf", display_name: "PDF Downloads", tooltip_text: 'Total number of PDF views and downloads for this article. These views are recorded directly within the system itself. Overall monthly view counts may also be available.' },
+							{ name: "likes", display_name: "Likes", tooltip_text: 'Likes found in social networks such as Facebook.' },
+							{ name: "shares", display_name: "Shares", tooltip_text: 'Shares or bookmarks in social networks such as Facebook, CiteULike and Mendeley. In most cases, clicking on the number of shares will take you to a listing in the network itself.' },
+							{ name: "comments", display_name: "Comments", tooltip_text: 'Comments are .' },
+							{ name: "citations", display_name: "Citations", tooltip_text: 'Citations of this article found in CrossRef, PubMed and Wikipedia. In most cases, clicking on the citation count will take you to a listing in the referencing service itself.' }],
+				}
+	
+			d3.json('alm.json', function(data) {
+				options.almStatsJson = data
 
+				var almviz = new AlmViz(options);
+				almviz.initViz();
+
+		});
+	</script>
     <div id="built-with"><p>Built with <a href="http://d3js.org/">d3.js</a></p></div>
 	</body>
 </html>
