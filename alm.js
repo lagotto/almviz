@@ -2,7 +2,7 @@
  * ALMViz
  * See https://github.com/articlemetrics/almviz for more details
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
- * 
+ *
  * @brief Article level metrics visualization controller.
  */
 function AlmViz(options) {
@@ -143,7 +143,6 @@ function AlmViz(options) {
         $row = $categoryRow
             .append("div")
             .attr("class", "alm-row")
-            .attr("style", "float: left")
             .attr("id", "alm-row-" + source.name + "-" + category.name);
 
         $countLabel = $row.append("div")
@@ -232,8 +231,10 @@ function AlmViz(options) {
 
             // check there is data for
             if (showDaily || showMonthly || showYearly) {
+                $row
+                    .attr('class', 'alm-row with-chart');
+
                 var $chartDiv = $row.append("div")
-                    .attr("style", "width: 70%; float:left;")
                     .attr("class", "alm-chart-area");
 
                 var viz = getViz_($chartDiv, source, category);
@@ -301,11 +302,6 @@ function AlmViz(options) {
                         }
                     );
                 }
-
-                // add a clearer and styles to ensure graphs on their own line
-                $row.insert("div", ":first-child")
-                    .attr('style', 'clear:both');
-                $row.attr('style', "width: 100%");
             };
         };
 
@@ -493,7 +489,8 @@ function AlmViz(options) {
         //
 
         // TODO: these transitions could use a little work
-        var barWidth = Math.max((viz.width/(timeInterval.range(pub_date, end_date).length + 1)) - 2, 1);
+        var rawWidth = (viz.width/(timeInterval.range(pub_date, end_date).length + 1));
+        var barWidth = Math.max(rawWidth - rawWidth/5, 1);
 
         var barsForTooltips = viz.barsForTooltips.selectAll(".barsForTooltip")
             .data(level_data, function(d) { return getDate_(level, d); });

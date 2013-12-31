@@ -11,7 +11,10 @@
 }
 
 .alm-chart-area {
-    font-size: 11px;
+  position: absolute;
+  top: 0;
+  left: 175px;
+  font-size: 11px;
 }
 
 .axis line,
@@ -35,7 +38,12 @@
 }
 
 .alm-row {
-    margin-bottom: 1em;
+  position: relative;
+  margin-bottom: 1em;
+}
+
+.with-chart {
+  height: 125px;
 }
 
 .alm-category-row-heading {
@@ -56,18 +64,17 @@
 
 .alm-count-label {
 	width: 100px;
-    float: left;
-    margin-top: .5em;
+  margin-top: .5em;
 	margin-right: 2em;
 	padding: 0.8em;
 	text-align: center;
-	border: 1px solid #c5dbec; 
-	background: #c8d7d7;  
-	-moz-border-radius: 5px; 
-	-webkit-border-radius: 5px; 
+	border: 1px solid #c5dbec;
+	background: #c8d7d7;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
 	border-radius: 5px;
-	color: #304345;	
-	
+	color: #304345;
+
 }
 
 .alm-count-label a {
