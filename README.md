@@ -1,13 +1,11 @@
 # ALM Viz #
-A series of d3.js sparklines for PLOS Article-Level Metrics (ALM) API JSON results at the article level. 
+A series of d3.js sparklines for PLOS Article-Level Metrics (ALM) API JSON results at the article level.
 
 An example can be found on the [github page](http://jalperin.github.io/almviz/)
 
 These visualizations were inspired by conversations at the Alt-Viz hackathon group hosted by PLOS in November 2012. [More info](http://article-level-metrics.plos.org/alm-workshop-2012/hackathon/#altviz)
 
-license
-        -            -
-
+## License
 almviz is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
@@ -28,7 +26,7 @@ See <http://www.gnu.org/licenses/>.
     - additionalStatsJson (optional): an additional source (for appending to ALM app response)
     - baseUrl: URL of ALM installation for pointing users back
     - minItemsToShowGraph*: assoc array with the following keys, declaring conditions for when to show graph
-        - minEventsForYearly 
+        - minEventsForYearly
         - minEventsForMonthly
         - minEventsForDaily
         - minYearsForYearly
@@ -52,7 +50,7 @@ See <http://www.gnu.org/licenses/>.
 					minYearsForYearly: 6,
 					minMonthsForMonthly: 6,
 					minDaysForDaily: 6
-					}, 
+					},
 			hasIcon: ['wikipedia', 'scienceseeker', 'researchblogging', 'pubmed', 'nature', 'mendeley', 'facebook', 'crossref', 'citeulike'],
 			showTitle: true,
 			categories: [{ name: "html", display_name: "HTML Views", tooltip_text: 'Total number of HTML page views for this article. These views are recorded directly within the system itself. Overall monthly view counts may also be available.' },
@@ -69,4 +67,3 @@ See <http://www.gnu.org/licenses/>.
 		var almviz = new AlmViz(options);
 		almviz.initViz();
 	});
-
